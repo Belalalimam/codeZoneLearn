@@ -7,11 +7,12 @@ const validationSchema = () => {
       .withMessage("error")
       .isLength({ min: 2 })
       .withMessage("2"),
+
     body("age")
       .notEmpty()
       .withMessage("error")
       .isLength({ min: 2 })
-      .withMessage("2")
+      .withMessage("2"),
     ]
 }
 
