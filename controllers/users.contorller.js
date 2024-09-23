@@ -60,7 +60,7 @@ const editUser = asyncWrapper(async (req, res, next) => {
 });
 
 const addUser = asyncWrapper(async (req, res, next) => {
-  const { name, age, email, password } = req.body;
+  const { name, age, email, password, role } = req.body;
 
   const oldUser = await Users.findOne({ email: email });
 
@@ -78,9 +78,10 @@ const addUser = asyncWrapper(async (req, res, next) => {
 
   const newUser = new Users({
     name,
-    age,
+    age, 
     email,
     password: hashedPassword,
+    role
   });
 
 
