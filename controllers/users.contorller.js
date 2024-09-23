@@ -6,15 +6,11 @@ const appError = require("../utils/appError");
 const bcrypt = require("bcrypt");
 const generateJWT = require("../utils/generateJWT");
 
-
  
 
 const getUsers = asyncWrapper(async (req, res) => {
 
-
-
-
-  console.log("🚀 ~ verifyToken ~ token:", req.headers)
+  console.log("🚀 ~ verifyTokn ~ token:", req.headers)
   const query = req.query;
 
   const limit = query.limit || 10;
@@ -60,7 +56,7 @@ const editUser = asyncWrapper(async (req, res, next) => {
 });
 
 const addUser = asyncWrapper(async (req, res, next) => {
-  const { name, age, email, password, role } = req.body;
+  const { name, age, email, password, role, avatar } = req.body;
 
   const oldUser = await Users.findOne({ email: email });
 
@@ -81,11 +77,12 @@ const addUser = asyncWrapper(async (req, res, next) => {
     age, 
     email,
     password: hashedPassword,
-    role
+    role,
+    avatar
   });
 
 
-    const token = await generateJWT({email: newUser.email, id: newUser._id})
+    const token = await generateJWT({email: newUser.email, id: newUser._id, role: newUser.role})
 
     newUser.token = token
 
@@ -101,7 +98,9 @@ const deleteUser = asyncWrapper(async (req, res) => {
 });
 
 const login = asyncWrapper(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password,  role, name, age } = req.body;
+
+
   const user = await Users.findOne({ email: email });
   if (!user) {
     const error = appError.create(
@@ -120,10 +119,13 @@ const login = asyncWrapper(async (req, res, next) => {
     );
     return next(error);
   }
-  const token = await generateJWT({email: user.email, id: user._id})
+  const token = await generateJWT({email: user.email, id: user._id,  role: user.role})
+
 
   
-  res.json({ status: httpStatusText.SUCCESS, data: { token } });
+  res.json({ status: httpStatusText.SUCCESS, data: { user } });
+
+  console.log("🚀 ~ login ~ token:", token)
 });
 
 module.exports = {

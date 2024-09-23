@@ -1,21 +1,30 @@
 const express = require("express");
-const {validationSchema} =  require('../middlewares/middlewareSchema');
+const { validationSchema } = require("../middlewares/middlewareSchema");
 const UsersController = require("../controllers/users.contorller");
-const verifyToken  = require('../middlewares/verifyToken');
+const verifyToken = require("../middlewares/verifyToken");
+const userRoles = require("../utils/usersRoles");
+const allowedTo = require("../middlewares/allowedTo");
+const multer = require('multer')
+
+const upload = multer({ dest: 'uploads/' })
+
 
 const router = express.Router();
 
 router
-  .route("/")
-  .get(verifyToken ,UsersController.getUsers)
-  .post(UsersController.addUser);
-
-router
   .route("/:userId")
   .get(UsersController.getUser)
-  .post(UsersController.login)
-  .put(validationSchema() ,UsersController.editUser)
-  .delete(UsersController.deleteUser);
+  .put(validationSchema(), UsersController.editUser)
+  .delete(
+    verifyToken,
+    allowedTo(userRoles.ADMIN, userRoles.MODERATOR),
+    UsersController.deleteUser
+  );
+
+router.route("/").get(verifyToken, UsersController.getUsers);
+
+router.route("/login").post(UsersController.login);
+
+router.route("/addUser").post(upload.single('avatar'), UsersController.addUser);
 
 module.exports = router;
- 

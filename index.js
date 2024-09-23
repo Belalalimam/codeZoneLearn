@@ -5,8 +5,9 @@ const mongoose = require('mongoose')
 const httpStatusText = require('./utils/httpStatusText')
 // const error = require('./utils/appError')
 const url =  process.env.MONGO_URL;
+const path = require('path')
 
- 
+
 
 mongoose.connect(url).then(
   () => console.log('connected to database'),
@@ -15,6 +16,10 @@ mongoose.connect(url).then(
 
 
 const app = express();
+
+app.use('/uploads', express.static(path.join(__dirname,'uploads')))
+
+
 
 app.use(express.json());
 
