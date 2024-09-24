@@ -6,11 +6,8 @@ const appError = require("../utils/appError");
 const bcrypt = require("bcrypt");
 const generateJWT = require("../utils/generateJWT");
 
- 
-
 const getUsers = asyncWrapper(async (req, res) => {
-
-  console.log("🚀 ~ verifyTokn ~ token:", req.headers)
+  console.log("🚀 ~ verifyTokn ~ token:", req.headers);
   const query = req.query;
 
   const limit = query.limit || 10;
@@ -74,32 +71,36 @@ const addUser = asyncWrapper(async (req, res, next) => {
 
   const newUser = new Users({
     name,
-    age, 
+    age,
     email,
     password: hashedPassword,
     role,
-    avatar
+    avatar,
   });
 
+  const token = await generateJWT({
+    email: newUser.email,
+    id: newUser._id,
+    role: newUser.role,
+  });
+  console.log("🚀 ~ addUser ~ token:", token);
 
-    const token = await generateJWT({email: newUser.email, id: newUser._id, role: newUser.role})
-
-    newUser.token = token
+  newUser.token = token;
 
   await newUser.save();
-
 
   res.status(201).json({ status: httpStatusText.SUCCESS, data: { newUser } });
 });
 
 const deleteUser = asyncWrapper(async (req, res) => {
+  console.log("🚀 ~ addUser ~ newUser:", newUser);
+  console.log("🚀 ~ addUser ~ newUser:", newUser);
   await Users.deleteOne({ _id: req.params.userId });
   res.json({ status: httpStatusText.SUCCESS, data: null });
 });
 
 const login = asyncWrapper(async (req, res, next) => {
-  const { email, password,  role, name, age } = req.body;
-
+  const { email, password, role, name, age } = req.body;
 
   const user = await Users.findOne({ email: email });
   if (!user) {
@@ -119,13 +120,15 @@ const login = asyncWrapper(async (req, res, next) => {
     );
     return next(error);
   }
-  const token = await generateJWT({email: user.email, id: user._id,  role: user.role})
+  const token = await generateJWT({
+    email: user.email,
+    id: user._id,
+    role: user.role,
+  });
 
-
-  
   res.json({ status: httpStatusText.SUCCESS, data: { user } });
 
-  console.log("🚀 ~ login ~ token:", token)
+  console.log("🚀 ~ login ~ token:", token);
 });
 
 module.exports = {

@@ -6,3 +6,4 @@ module.exports = async (payload) => {
   });
   return token;
 };
+ 

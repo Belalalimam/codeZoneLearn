@@ -25,6 +25,7 @@ router.route("/").get(verifyToken, UsersController.getUsers);
 
 router.route("/login").post(UsersController.login);
 
-router.route("/addUser").post(upload.single('avatar'), UsersController.addUser);
+router.route("/addUser").post(upload.single('avatar') ,UsersController.addUser);
 
 module.exports = router;
+ 
