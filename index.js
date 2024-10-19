@@ -9,6 +9,7 @@ const path = require("path");
 mongoose.connect(url).then(() => console.log("connected to database"));
 
 const app = express();
+app.use(require('cors')());  
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

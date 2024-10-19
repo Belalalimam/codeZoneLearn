@@ -93,8 +93,6 @@ const addUser = asyncWrapper(async (req, res, next) => {
 });
 
 const deleteUser = asyncWrapper(async (req, res) => {
-  console.log("🚀 ~ addUser ~ newUser:", newUser);
-  console.log("🚀 ~ addUser ~ newUser:", newUser);
   await Users.deleteOne({ _id: req.params.userId });
   res.json({ status: httpStatusText.SUCCESS, data: null });
 });

@@ -43,14 +43,14 @@ const router = express.Router();
 router
   .route("/:userId")
   .get(UsersController.getUser)
-  .put(validationSchema(), UsersController.editUser)
+  .put(validationSchema(), verifyToken, UsersController.editUser)
   .delete(
     verifyToken,
-    allowedTo(userRoles.ADMIN, userRoles.MODERATOR),
+    // allowedTo(userRoles.ADMIN, userRoles.MODERATOR),
     UsersController.deleteUser
   );
 
-router.route("/").get(verifyToken, UsersController.getUsers);
+router.route("/").get(UsersController.getUsers);
 
 router.route("/login").post(UsersController.login);
 
