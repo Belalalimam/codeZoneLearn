@@ -42,17 +42,21 @@ const router = express.Router();
 
 router
   .route("/:userId")
-  .get(UsersController.getUser)
-  .put(validationSchema(), verifyToken, UsersController.editUser)
+  // .get(UsersController.getUser)
+  .put(validationSchema(), UsersController.editUser)
   .delete(
-    verifyToken,
+    // verifyToken,
     // allowedTo(userRoles.ADMIN, userRoles.MODERATOR),
     UsersController.deleteUser
   );
 
+router.route("/login").post(UsersController.login);
+  
 router.route("/").get(UsersController.getUsers);
 
-router.route("/login").post(UsersController.login);
+router.route("/getUser/:userId").get( UsersController.getUser);
+
+// router.route("/addUser").post(validationSchema(), UsersController.addUser);
 
 router.route("/addUser").post(upload.single('avatar') ,UsersController.addUser);
 

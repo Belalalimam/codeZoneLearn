@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const generateJWT = require("../utils/generateJWT");
 
 const getUsers = asyncWrapper(async (req, res) => {
-  console.log("🚀 ~ verifyTokn ~ token:", req.headers);
+  console.log("🚀 ~ verifyTokn ~ token:", req.params);
   const query = req.query;
 
   const limit = query.limit || 10;
@@ -53,6 +53,7 @@ const editUser = asyncWrapper(async (req, res, next) => {
 });
 
 const addUser = asyncWrapper(async (req, res, next) => {
+  
   const { name, age, email, password, role, avatar } = req.body;
 
   const oldUser = await Users.findOne({ email: email });
@@ -75,7 +76,7 @@ const addUser = asyncWrapper(async (req, res, next) => {
     email,
     password: hashedPassword,
     role,
-    avatar: req.file.filename
+    // avatar: req.file.filename
   });
 
   const token = await generateJWT({
