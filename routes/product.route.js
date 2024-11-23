@@ -1,6 +1,6 @@
 const express = require("express");
 const { validationSchema } = require("../middlewares/middlewareSchema");
-const UsersController = require("../controllers/users.contorller");
+const productController = require("../controllers/products.contorller");
 const verifyToken = require("../middlewares/verifyToken");
 const userRoles = require("../utils/usersRoles");
 const allowedTo = require("../middlewares/allowedTo");
@@ -40,25 +40,25 @@ const upload = multer({ storage: deskStorge, fileFilter})
 
 const router = express.Router();
 
-router
-  .route("/:userId")
-  // .get(UsersController.getUser)
-  .put(validationSchema(), UsersController.editUser)
-  .delete(
-    // verifyToken,
-    // allowedTo(userRoles.ADMIN, userRoles.MODERATOR),
-    UsersController.deleteUser
-  );
+// router
+//   .route("/:userId")
+//   // .get(productController.getUser)
+//   .put(validationSchema(), productController.editProduct)
+//   .delete(
+//     verifyToken,
+//     allowedTo(userRoles.ADMIN, userRoles.MODERATOR),
+//     productController.deleteProduct
+//   );
 
-router.route("/login").post(UsersController.login);
+// router.route("/login").post(productController.login);
   
-router.route("/").get(UsersController.getUsers);
+router.route("/").get(productController.getProducts);
 
-router.route("/getUser/:userId").get( UsersController.getUser);
+router.route("/getProduct/:productId").get( productController.getProduct);
 
-// router.route("/addUser").post(validationSchema(), UsersController.addUser);
+router.route("/addProduct").post(upload.single('productImage') , productController.addProduct);
 
-router.route("/addUser").post(upload.single('avatar') ,UsersController.addUser);
+// router.route("/addUser").post(upload.single('avatar') ,productController.addProduct);
 
 module.exports = router;
  

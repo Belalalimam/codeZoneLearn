@@ -1,5 +1,5 @@
 const express = require("express");
-const usersRouter = require("./routes/users.route");
+const productsRouter = require("./routes/product.route");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const httpStatusText = require("./utils/httpStatusText");
@@ -15,7 +15,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(express.json());
 
-app.use("/api/users", usersRouter);
+app.use("/products", productsRouter);
 
 app.all("*", (req, res) => {
   return res
