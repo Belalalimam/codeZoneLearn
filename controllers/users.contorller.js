@@ -56,6 +56,7 @@ const editUser = asyncWrapper(async (req, res, next) => {
 });
 
 const addUser = asyncWrapper(async (req, res, next) => {
+  console.log("Request body:", req.body);
   const { name, age, email, password, role, avatar } = req.body;
 
   const oldUser = await Users.findOne({ email: email });
@@ -70,15 +71,15 @@ const addUser = asyncWrapper(async (req, res, next) => {
     return next(error);
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hashSync(password, 10);
 
   const newUser = new Users({
     name,
     age, 
     email,
-    password: hashedPassword,
     role,
-    avatar
+    avatar: req.file ? req.file.filename : "uploads/mypng.jpg",
+    password: hashedPassword,
   });
 
 

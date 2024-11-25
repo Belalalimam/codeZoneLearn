@@ -21,7 +21,7 @@ router
     UsersController.deleteUser
   );
 
-router.route("/").get(verifyToken, UsersController.getUsers);
+router.route("/").get( UsersController.getUsers);
 
 router.route("/login").post(UsersController.login);
 

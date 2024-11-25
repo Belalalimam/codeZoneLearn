@@ -6,11 +6,11 @@ const userRoles = require('../utils/usersRoles')
 const usersSchema = new mongoose.Schema({
     name:{
         type: String,
-        require: true
+        // require: true
     },
     age:{
         type: Number,
-        require: true
+        // require: true
     },
     email:{
         type: String,
