@@ -33,7 +33,11 @@ const usersSchema = new mongoose.Schema({
     avatar:{
       type: String,
       // default: 'uploads/mypng.jpg'
-    }
+    },
+    likedProducts: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Products'
+    }]
 })
 
 module.exports = mongoose.model('Users',  usersSchema)

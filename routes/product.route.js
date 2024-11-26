@@ -40,7 +40,7 @@ const upload = multer({ storage: deskStorge, fileFilter})
 
 const routerProduct = express.Router();
 
-// router
+// routerProduct
 //   .route("/:userId")
 //   // .get(productController.getUser)
 //   .put(validationSchema(), productController.editProduct)
@@ -50,15 +50,15 @@ const routerProduct = express.Router();
 //     productController.deleteProduct
 //   );
 
-// router.route("/login").post(productController.login);
+// routerProduct.route("/login").post(productController.login);
   
-router.route("/").get(productController.getProducts);
+routerProduct.route("/").get(productController.getProducts);
 
-router.route("/getProduct/:productId").get( productController.getProduct);
+routerProduct.route("/getProduct/:productId").get( productController.getProduct);
 
-router.route("/addProduct").post(upload.single('productImage') , productController.addProduct);
+routerProduct.route("/addProduct").post(upload.single('productImage') , productController.addProduct);
 
-// router.route("/addUser").post(upload.single('avatar') ,productController.addProduct);
+// router.routerProduct("/addUser").post(upload.single('avatar') ,productController.addProduct);
 
 module.exports = routerProduct;
  

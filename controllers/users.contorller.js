@@ -65,7 +65,7 @@ const addUser = asyncWrapper(async (req, res, next) => {
     const error = appError.create(
       "email already exist",
       400,
-      httpStatusText.FAIL
+      httpStatusText.FAIL 
     );
 
     return next(error);
@@ -120,11 +120,29 @@ const login = asyncWrapper(async (req, res, next) => {
     );
     return next(error);
   }
-  const token = await generateJWT({email: user.email, id: user._id,  role: user.role})
+  const token = await generateJWT({
+    email: user.email, 
+    id: user._id,  
+    role: user.role
+  });
 
-
+  user.token = token;
+  await user.save();
   
-  res.json({ status: httpStatusText.SUCCESS, data: { user } });
+  res.json({ 
+    status: httpStatusText.SUCCESS, 
+    data: { 
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+        likedProducts: user.likedProducts,
+        token: token
+      } 
+    } 
+  });
 
   console.log("🚀 ~ login ~ token:", token)
 });
