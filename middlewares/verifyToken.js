@@ -3,8 +3,9 @@ const httpStatusText = require("../utils/httpStatusText");
 const appError = require("../utils/appError");
 
 const verifyToken = (req, res, next) => {
+  
   const authHeader =
-    req.headers["Authorization"] || req.headers["authorization"];
+    req.query["Authorization"] || req.query["authorization"];
   if (!authHeader) {
     const error = appError.create(
       "token is required",
